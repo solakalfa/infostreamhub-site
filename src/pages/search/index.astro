@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "@/layouts/base.astro";
 import "@pagefind/default-ui/css/ui.css";
-import { getEntry } from "astro:content";
+import { getEntry } from "@/lib/mockContent";
 
 const entry = await getEntry("views", "search");
 
