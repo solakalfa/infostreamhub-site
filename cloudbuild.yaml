@@ -1,0 +1,34 @@
+﻿steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '--build-arg'
+      - 'PUBLIC_SANITY_PROJECT_ID=zh12zogr'
+      - '--build-arg'
+      - 'PUBLIC_SANITY_DATASET=production'
+      - '--build-arg'
+      - 'PUBLIC_SANITY_API_VERSION=2024-01-01'
+      - '--build-arg'
+      - 'PUBLIC_SITE_ID=infostreamhub'
+      - '--build-arg'
+      - 'PUBLIC_API_BASE=https://primis-nexus-api-stg-667309300722.us-central1.run.app'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/infostreamhub-frontend'
+      - '.'
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/infostreamhub-frontend']
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'infostreamhub-frontend'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/infostreamhub-frontend'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+images:
+  - 'gcr.io/$PROJECT_ID/infostreamhub-frontend'
