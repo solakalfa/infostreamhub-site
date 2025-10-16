@@ -1,0 +1,25 @@
+export async function getArticles(siteId: string) {
+  return await sanity.fetch(
+    `*[_type == "article" && siteId == $siteId] | order(publishedAt desc, _createdAt desc) {
+      _id,
+      title,
+      slug,
+      excerpt,
+      mainImage {
+        asset->{
+          url
+        },
+        alt,
+        caption
+      },
+      publishedAt,
+      _createdAt,
+      isMainHeadline,
+      isSubHeadline,
+      "author": author->name,
+      categories[]->{ title, slug },
+      readingTime
+    }`,
+    { siteId }
+  );
+}

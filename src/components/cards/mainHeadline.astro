@@ -13,7 +13,8 @@ const { article } = Astro.props;
 const category = article?.categories?.[0]?.title || "News";
 const title = article?.title || "Untitled";
 const excerpt = article?.excerpt || "";
-const mainImage = article?.mainImage || "";
+const mainImage = article?.mainImage?.asset?.url || "";
+const imageAlt = article?.mainImage?.alt || title;
 const slug = article?.slug?.current || article?.slug || "";
 const publishedAt = article?.publishedAt || new Date().toISOString();
 ---
@@ -23,7 +24,7 @@ const publishedAt = article?.publishedAt || new Date().toISOString();
     {mainImage ? (
       <img
         src={mainImage}
-        alt={title}
+        alt={imageAlt}
         class="w-full h-full object-cover"
         loading="eager"
       />
@@ -54,4 +55,3 @@ const publishedAt = article?.publishedAt || new Date().toISOString();
     </div>
   </div>
 </article>
-

@@ -12,7 +12,8 @@ const { article, index } = Astro.props;
 const category = article?.categories?.[0]?.title || "News";
 const title = article?.title || "Untitled";
 const excerpt = article?.excerpt || article?.description || "";
-const mainImage = article?.mainImage || article?.cover || "";
+const mainImage = article?.mainImage?.asset?.url || article?.cover || "";
+const imageAlt = article?.mainImage?.alt || title;
 const slug = article?.slug?.current || article?.slug || "";
 const readingTime = article?.readingTime || "5 min read";
 ---
@@ -24,7 +25,7 @@ const readingTime = article?.readingTime || "5 min read";
     {mainImage ? (
       <img
         src={mainImage}
-        alt={title}
+        alt={imageAlt}
         loading={index < 3 ? "eager" : "lazy"}
         class="w-full h-full object-cover"
       />

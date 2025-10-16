@@ -24,7 +24,16 @@ const query = `*[_type == "article" && slug.current == $slug && siteId == $siteI
   vertical,
   keywords,
   excerpt,
-  author
+  author,
+  mainImage {
+    asset->{
+      url,
+      metadata {
+        dimensions
+      }
+    },
+    alt
+  }
 }`;
 
 const article = await sanity.fetch(query, { slug, siteId });
@@ -148,6 +157,18 @@ const shareTitle = encodeURIComponent(article.title);
         </p>
       )}
     </header>
+
+    {article.mainImage?.asset?.url && (
+      <div class="max-w-4xl mx-auto px-4 mb-8">
+        <img 
+          src={article.mainImage.asset.url}
+          alt={article.mainImage.alt || article.title}
+          class="w-full h-auto rounded-xl shadow-lg"
+          width={article.mainImage.asset.metadata?.dimensions?.width}
+          height={article.mainImage.asset.metadata?.dimensions?.height}
+        />
+      </div>
+    )}
 
     <div class="max-w-4xl mx-auto px-4">
       

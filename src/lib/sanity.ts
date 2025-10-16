@@ -17,17 +17,25 @@ export function urlFor(source: SanityImageSource) {
 
 export async function getArticles(siteId: string) {
   return await sanityClient.fetch(
-    `*[_type == "article" && siteId == $siteId] | order(publishedAt desc) {
+    `*[_type == "article" && siteId == $siteId] | order(publishedAt desc, _createdAt desc) {
       _id,
       title,
       slug,
       excerpt,
-      "mainImage": mainImage.asset->url,
+      mainImage {
+        asset->{
+          url
+        },
+        alt,
+        caption
+      },
       publishedAt,
+      _createdAt,
       isMainHeadline,
       isSubHeadline,
       "author": author->name,
-      categories[]->{ title, slug }
+      categories[]->{ title, slug },
+      readingTime
     }`,
     { siteId }
   );
@@ -40,15 +48,25 @@ export async function getArticle(slug: string, siteId: string) {
       title,
       slug,
       body,
+      content,
       excerpt,
-      "mainImage": mainImage.asset->url,
+      mainImage {
+        asset->{
+          url
+        },
+        alt,
+        caption
+      },
       publishedAt,
       isMainHeadline,
       isSubHeadline,
       "author": author->{name, image},
-      categories[]->{ title, slug }
+      categories[]->{ title, slug },
+      readingTime,
+      keywords
     }`,
     { slug, siteId }
   );
 }
+
 export const sanity = sanityClient;
