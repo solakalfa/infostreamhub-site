@@ -3,7 +3,6 @@ import { NAVIGATION_LINKS, SOCIAL_LINKS, OTHER_LINKS } from "@/lib/config";
 import Hashtag from "@/assets/svgs/hashtag.astro";
 import Icon from "../bases/icon.astro";
 ---
-
 <footer
   class="footer border-t border-primary-content/80 dark:border-primary-content/20 py-6"
 >
@@ -12,17 +11,13 @@ import Icon from "../bases/icon.astro";
       <aside class="flex items-center gap-2">
         <Hashtag />
         <p>
-          <strong class="text-lg">Astro News</strong>
+          <strong class="text-xl">InfoStream Hub</strong>
           <br />
-          A news website built with <a
-            class="underline"
-            href="https://astro.build"
-            target="_blank">Astro</a
-          >.
+          Your trusted source for financial insights and news.
         </p>
       </aside>
       <nav
-        class="flex flex-col gap-4 lg:flex-row lg:flex-wrap text-base lg:text-sm font-semibold"
+        class="flex flex-col gap-4 lg:flex-row lg:flex-wrap text-lg font-semibold"
       >
         <a href="/" class="link link-hover">Home</a>
         <a href="/articles" class="link link-hover">Articles</a>
@@ -38,28 +33,28 @@ import Icon from "../bases/icon.astro";
     <div class="divider w-full h-1"></div>
     <div class="flex flex-col gap-4">
       <nav>
-        <div class="flex gap-4">
-          <p class="font-bold">Social Media:</p>
+        <div class="flex gap-4 items-center">
+          <p class="font-bold text-base">Social Media:</p>
           <ul class="flex flex-wrap gap-4">
-            {
-              SOCIAL_LINKS.map(({ href, icon, text, target }) => (
-                <li>
-                  <a
-                    href={href}
-                    class="link link-hover"
-                    target={target ?? "_blank"}
-                    title={text}
-                    aria-label={text}
-                  >
-                    <Icon icon={icon} />
-                  </a>
-                </li>
-              ))
-            }
+            <li>
+              <a href="https://twitter.com/infostreamhub" class="link link-hover" target="_blank" title="Twitter" aria-label="Twitter">
+                <Icon icon="newTwitter" />
+              </a>
+            </li>
+            <li>
+              <a href="https://www.facebook.com/infostreamhub" class="link link-hover" target="_blank" title="Facebook" aria-label="Facebook">
+                <Icon icon="facebook" />
+              </a>
+            </li>
+            <li>
+              <a href="https://linkedin.com/company/infostreamhub" class="link link-hover" target="_blank" title="LinkedIn" aria-label="LinkedIn">
+                <Icon icon="linkedin" />
+              </a>
+            </li>
           </ul>
         </div>
       </nav>
-      <nav class="flex flex-wrap gap-4 text-xs mt-2">
+      <nav class="flex flex-wrap gap-4 text-sm mt-2">
         {
           OTHER_LINKS.map(({ href, text, target }) => (
             <a href={href} class="link link-hover" target={target ?? "_self"}>
@@ -68,6 +63,9 @@ import Icon from "../bases/icon.astro";
           ))
         }
       </nav>
+      <p class="text-sm text-gray-500 mt-2">
+        © {new Date().getFullYear()} InfoStream Hub. All rights reserved.
+      </p>
     </div>
   </div>
 </footer>

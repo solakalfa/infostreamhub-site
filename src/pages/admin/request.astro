@@ -1,0 +1,235 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Admin - Request Article">
+  <div class="max-w-4xl mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-3xl font-bold">Request New Article</h1>
+      <a href="/admin" class="text-blue-600 hover:text-blue-700 font-medium">← Back to Articles</a>
+    </div>
+    
+    <div class="bg-white shadow rounded-lg p-6">
+      <form id="article-form" class="space-y-6">
+        <!-- Vertical -->
+        <div>
+          <label for="vertical" class="block text-sm font-medium text-gray-700 mb-1">
+            Vertical <span class="text-red-500">*</span>
+          </label>
+          <select id="vertical" name="vertical" required 
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+            <option value="">Select vertical...</option>
+            <option value="finance">Finance</option>
+            <option value="health">Health</option>
+            <option value="home_improvement">Home Improvement</option>
+            <option value="technology">Technology</option>
+            <option value="travel">Travel</option>
+          </select>
+        </div>
+
+        <!-- Topic -->
+        <div>
+          <label for="topic" class="block text-sm font-medium text-gray-700 mb-1">
+            Topic <span class="text-red-500">*</span>
+          </label>
+          <input type="text" id="topic" name="topic" required
+            placeholder="e.g., retirement planning for millennials"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+        </div>
+
+        <!-- Keywords -->
+        <div>
+          <label for="keywords" class="block text-sm font-medium text-gray-700 mb-1">
+            Keywords <span class="text-red-500">*</span>
+          </label>
+          <input type="text" id="keywords" name="keywords" required
+            placeholder="401k, Roth IRA, compound interest (comma-separated)"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+          <p class="mt-1 text-sm text-gray-500">Separate keywords with commas</p>
+        </div>
+
+        <!-- Target Languages -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Target Languages <span class="text-red-500">*</span>
+          </label>
+          <div class="space-y-2">
+            <label class="flex items-center">
+              <input type="checkbox" name="languages" value="en" class="mr-2 h-4 w-4 text-blue-600">
+              <span>English (en)</span>
+            </label>
+            <label class="flex items-center">
+              <input type="checkbox" name="languages" value="he" class="mr-2 h-4 w-4 text-blue-600">
+              <span>Hebrew (he)</span>
+            </label>
+            <label class="flex items-center">
+              <input type="checkbox" name="languages" value="es" class="mr-2 h-4 w-4 text-blue-600">
+              <span>Spanish (es)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Optional fields -->
+        <div>
+          <label for="headline" class="block text-sm font-medium text-gray-700 mb-1">
+            Headline (optional)
+          </label>
+          <input type="text" id="headline" name="headline"
+            placeholder="e.g., How Millennials Can Retire Comfortably"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+        </div>
+
+        <div>
+          <label for="seed_content" class="block text-sm font-medium text-gray-700 mb-1">
+            Seed Content (optional)
+          </label>
+          <textarea id="seed_content" name="seed_content" rows="4"
+            placeholder="Intro paragraph or outline..."
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+
+        <div>
+          <label for="tone" class="block text-sm font-medium text-gray-700 mb-1">
+            Tone (optional)
+          </label>
+          <select id="tone" name="tone"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+            <option value="">Select tone...</option>
+            <option value="informative">Informative</option>
+            <option value="persuasive">Persuasive</option>
+            <option value="casual">Casual</option>
+            <option value="professional">Professional</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="word_count" class="block text-sm font-medium text-gray-700 mb-1">
+            Word Count (optional)
+          </label>
+          <input type="number" id="word_count" name="word_count" min="300" max="5000"
+            placeholder="e.g., 900"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+        </div>
+
+        <div>
+          <label for="external_ref" class="block text-sm font-medium text-gray-700 mb-1">
+            External Reference (optional)
+          </label>
+          <input type="text" id="external_ref" name="external_ref"
+            placeholder="e.g., tarzo-job-8b1a"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+        </div>
+
+        <div>
+          <label for="campaign_id" class="block text-sm font-medium text-gray-700 mb-1">
+            Campaign ID (optional)
+          </label>
+          <input type="text" id="campaign_id" name="campaign_id"
+            placeholder="e.g., cmp_12345"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex gap-4 pt-4 border-t">
+          <button type="submit" id="submit-btn"
+            class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 disabled:bg-gray-300 disabled:cursor-not-allowed">
+            Request Article
+          </button>
+          <button type="reset"
+            class="px-6 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">
+            Reset
+          </button>
+        </div>
+
+        <div id="status-message" class="hidden mt-4 p-4 rounded-md"></div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = import.meta.env.PUBLIC_API_BASE;
+    const form = document.getElementById('article-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const statusMsg = document.getElementById('status-message');
+
+    function showStatus(message, type = 'info') {
+      statusMsg.textContent = message;
+      statusMsg.className = `mt-4 p-4 rounded-md ${
+        type === 'success' ? 'bg-green-100 text-green-800' :
+        type === 'error' ? 'bg-red-100 text-red-800' :
+        'bg-blue-100 text-blue-800'
+      }`;
+      statusMsg.classList.remove('hidden');
+    }
+
+    function validateForm(formData) {
+      const languages = formData.getAll('languages');
+      if (languages.length === 0) {
+        showStatus('Please select at least one target language', 'error');
+        return false;
+      }
+      return true;
+    }
+
+    function buildPayload(formData) {
+      const keywords = formData.get('keywords')
+        .split(',')
+        .map(k => k.trim())
+        .filter(k => k.length > 0);
+
+      return {
+        vertical: formData.get('vertical'),
+        topic: formData.get('topic'),
+        keywords: keywords,
+        target_languages: formData.getAll('languages'),
+        siteId: import.meta.env.PUBLIC_SITE_ID || 'infostreamhub',
+        options: {
+          headline: formData.get('headline') || undefined,
+          seed_content: formData.get('seed_content') || undefined,
+          tone: formData.get('tone') || undefined,
+          word_count: formData.get('word_count') ? parseInt(formData.get('word_count')) : undefined
+        },
+        metadata: {
+          external_ref: formData.get('external_ref') || undefined,
+          campaign_id: formData.get('campaign_id') || undefined
+        }
+      };
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      if (!validateForm(formData)) return;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting...';
+      showStatus('Submitting article request...', 'info');
+
+      try {
+        const payload = buildPayload(formData);
+        const response = await fetch(`${import.meta.env.PUBLIC_API_BASE}/api/v1/content/articles/auto`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            // 'x-api-key': 'tarzo-key-001'  // Removed - auth handled by backend
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          showStatus(`✓ Article requested successfully! Slug: ${result.slug}`, 'success');
+          setTimeout(() => window.location.href = '/admin', 2000);
+        } else {
+          const error = await response.text();
+          showStatus(`Error: ${response.status} - ${error}`, 'error');
+        }
+      } catch (error) {
+        showStatus(`Network error: ${error.message}`, 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Request Article';
+      }
+    });
+  </script>
+</Layout>

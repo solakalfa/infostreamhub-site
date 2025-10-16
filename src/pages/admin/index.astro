@@ -1,0 +1,47 @@
+---
+import { sanity } from '../../lib/sanity';
+import Layout from '../../layouts/Layout.astro';
+
+const siteId = import.meta.env.PUBLIC_SITE_ID || 'infostreamhub';
+const query = `*[_type == "article" && defined(slug.current) && siteId == $siteId] | order(_createdAt desc) {
+  _id,
+  title,
+  "slug": slug.current,
+  _createdAt
+}`;
+const articles = await sanity.fetch(query, { siteId });
+---
+<Layout title="Admin - Articles">
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-3xl font-bold">Articles Management</h1>
+      <a 
+        href="/admin/tarzo-orders" 
+        class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 font-semibold"
+      >
+        📊 Tarzo Orders Dashboard
+      </a>
+    </div>
+    
+    <div class="bg-white shadow rounded-lg">
+      <div class="px-6 py-4 border-b">
+        <h2 class="text-lg font-medium">Published Articles</h2>
+      </div>
+      
+      <div class="p-6">
+        {articles.length === 0 ? (
+          <p class="text-gray-600">No articles found.</p>
+        ) : (
+          <ul class="divide-y divide-gray-200">
+            {articles.map((a) => (
+              <li class="py-2">
+                <strong>{a.title || "Untitled"}</strong> – {a.slug || ""}
+                <a href={`/articles/${a.slug}`} class="ml-4 text-blue-600 hover:underline">View</a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  </div>
+</Layout>

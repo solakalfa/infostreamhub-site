@@ -3,10 +3,9 @@ import MainHeadline from "@/components/cards/mainHeadline.astro";
 import SubHeadlineCard from "@/components/cards/subHeadlineCard.astro";
 import { articlesHandler } from "@/lib/handlers/articles";
 
-const mainHeadlineArticle = articlesHandler.mainHeadline();
-const subHeadlinesArticles = articlesHandler.subHeadlines();
+const mainHeadlineArticle = await articlesHandler.mainHeadline();
+const subHeadlinesArticles = await articlesHandler.subHeadlines();
 ---
-
 <section
   class="grid grid-cols-1 gap-6 md:grid-cols-10 container pt-4 md:pt-8"
   data-pagefind-ignore="all"

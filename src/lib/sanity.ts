@@ -51,3 +51,4 @@ export async function getArticle(slug: string, siteId: string) {
     { slug, siteId }
   );
 }
+export const sanity = sanityClient;

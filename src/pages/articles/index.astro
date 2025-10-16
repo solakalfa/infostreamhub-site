@@ -1,0 +1,90 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { sanity } from '../../lib/sanity';
+import Card from '../../components/cards/newsCard.astro';
+
+const siteId = import.meta.env.PUBLIC_SITE_ID || 'infostreamhub';
+const page = Number(Astro.url.searchParams.get('page') || '1');
+const perPage = 12;
+
+const query = `{
+  "articles": *[_type == "article" && siteId == $siteId && defined(slug.current)] | order(publishedAt desc, _createdAt desc) [$start...$end] {
+    _id,
+    title,
+    "slug": slug.current,
+    excerpt,
+    mainImage,
+    publishedAt,
+    _createdAt,
+    author,
+    vertical
+  },
+  "total": count(*[_type == "article" && siteId == $siteId && defined(slug.current)])
+}`;
+
+const start = (page - 1) * perPage;
+const end = start + perPage;
+
+const result = await sanity.fetch(query, { siteId, start, end });
+const articles = result.articles || [];
+const total = result.total || 0;
+const totalPages = Math.ceil(total / perPage);
+---
+
+<Layout 
+  title="Articles - InfoStream Hub"
+  description="Browse our latest financial insights and news articles"
+>
+  <div class="max-w-7xl mx-auto px-4 py-12">
+    
+    <header class="mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        Latest Articles
+      </h1>
+      <p class="text-lg text-gray-600">
+        Explore our collection of {total} financial insights and analysis
+      </p>
+    </header>
+
+    {articles.length > 0 ? (
+      <>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          {articles.map((article: any) => (
+            <Card article={article} />
+          ))}
+        </div>
+
+        {totalPages > 1 && (
+          <nav class="flex justify-center items-center gap-2" aria-label="Pagination">
+            {page > 1 && (
+              <a 
+                href={`/articles?page=${page - 1}`}
+                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+              >
+                ← Previous
+              </a>
+            )}
+
+            <span class="px-4 py-2 text-gray-600">
+              Page {page} of {totalPages}
+            </span>
+
+            {page < totalPages && (
+              <a 
+                href={`/articles?page=${page + 1}`}
+                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+              >
+                Next →
+              </a>
+            )}
+          </nav>
+        )}
+      </>
+    ) : (
+      <div class="text-center py-12">
+        <p class="text-xl text-gray-600">No articles found.</p>
+      </div>
+    )}
+
+  </div>
+</Layout>

@@ -1,0 +1,36 @@
+---
+import Head from "@/components/bases/head.astro";
+import Header from "@/components/shared/header.astro";
+import Footer from "@/components/shared/footer.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "" } = Astro.props;
+
+const meta = {
+  title,
+  description,
+  canonical: Astro.url.pathname,
+  ogType: "article"
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <Head meta={meta} />
+    <slot name="head" />
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <Header />
+    <main class="flex-1">
+      <div class="container mx-auto py-8">
+        <slot />
+      </div>
+    </main>
+    <Footer />
+  </body>
+</html>

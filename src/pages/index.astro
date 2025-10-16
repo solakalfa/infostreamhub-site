@@ -1,20 +1,15 @@
 ---
-import BaseLayout from "@/layouts/base.astro";
+import Layout from "../layouts/Layout.astro";
 import Headlines from "@/pages/_home/headlines.astro";
 import LatestNews from "@/pages/_home/latestNews.astro";
 import Authors from "@/pages/_home/authors.astro";
-
-// Mock entry for BaseLayout (אם הוא צריך אותו)
-const entry = {
-  data: {
-    title: "InfoStream Hub",
-    description: "Your trusted source for financial insights and news"
-  }
-};
 ---
 
-<BaseLayout entry={entry}>
+<Layout 
+  title="InfoStream Hub"
+  description="Your trusted source for financial insights and news"
+>
   <Headlines />
   <LatestNews />
   <Authors />
-</BaseLayout>
+</Layout>

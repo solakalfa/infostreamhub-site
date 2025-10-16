@@ -1,99 +1,54 @@
 import type { Link } from "../types";
 
 export const SITE = {
-  title: "Astro News",
-  description: "A news website built with Astro",
-  author: "Mohammad Rahmani",
-  url: "https://astro-news-six.vercel.app",
-  github: "https://github.com/Mrahmani71/astro-news",
+  title: "InfoStream Hub",
+  description: "Your trusted source for financial insights and news",
+  author: "InfoStream Hub Team",
+  url: "https://infostreamhub.com",
+  github: "https://github.com/infostreamhub",
   locale: "en-US",
   dir: "ltr",
   charset: "UTF-8",
   basePath: "/",
-  postsPerPage: 4,
+  postsPerPage: 12,
 };
 
 export const NAVIGATION_LINKS: Link[] = [
   {
-    href: "/categories/technology",
-    text: "Technology",
-  },
-  {
-    href: "/categories/programming",
-    text: "Programming",
-  },
-  {
-    href: "/categories/lifestyle",
-    text: "Lifestyle",
-  },
-  {
-    href: "/categories/productivity",
-    text: "Productivity",
-  },
-  {
-    href: "/categories/health",
-    text: "Health",
-  },
-  {
-    href: "/categories/finance",
-    text: "Finance",
-  },
-];
-
-export const OTHER_LINKS: Link[] = [
-  {
     href: "/about",
-    text: "About us",
-  },
-  {
-    href: "/authors",
-    text: "Authors",
+    text: "About",
   },
   {
     href: "/contact",
     text: "Contact",
   },
+];
+
+export const OTHER_LINKS: Link[] = [
   {
     href: "/privacy",
-    text: "Privacy",
+    text: "Privacy Policy",
   },
   {
     href: "/terms",
-    text: "Terms",
-  },
-  {
-    href: "/cookie-policy",
-    text: "Cookie Policy",
-  },
-  {
-    href: "https://astro-news-six.vercel.app/rss.xml",
-    text: "RSS",
-  },
-  {
-    href: "https://astro-news-six.vercel.app/sitemap-index.xml",
-    text: "Sitemap",
+    text: "Terms of Service",
   },
 ];
 
 export const SOCIAL_LINKS: Link[] = [
   {
-    href: "https://github.com",
-    text: "GitHub",
-    icon: "github",
-  },
-  {
-    href: "httpe://www.t.me",
-    text: "Telegram",
-    icon: "telegram",
-  },
-  {
-    href: "https://twitter.com",
+    href: "https://twitter.com/infostreamhub",
     text: "Twitter",
     icon: "newTwitter",
   },
   {
-    href: "https://www.facebook.com",
+    href: "https://www.facebook.com/infostreamhub",
     text: "Facebook",
     icon: "facebook",
+  },
+  {
+    href: "https://linkedin.com/company/infostreamhub",
+    text: "LinkedIn",
+    icon: "linkedin",
   },
 ];
