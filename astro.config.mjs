@@ -3,7 +3,7 @@ import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
-// import node from "@astrojs/node";  // ← הסר - לא צריך ל-Static
+import vercel from "@astrojs/vercel/serverless";
 import { modifiedTime, readingTime } from "./src/lib/utils/remarks.mjs";
 import { SITE } from "./src/lib/config";
 import keystatic from "@keystatic/astro";
@@ -12,6 +12,7 @@ import { loadEnv } from "vite";
 import pagefind from "astro-pagefind";
 
 const { RUN_KEYSTATIC } = loadEnv(import.meta.env.MODE, process.cwd(), "");
+
 const integrations = [mdx(), sitemap(), pagefind()];
 
 if (RUN_KEYSTATIC === "true") {
@@ -23,8 +24,8 @@ if (RUN_KEYSTATIC === "true") {
 export default defineConfig({
   site: SITE.url,
   base: SITE.basePath,
-  output: 'static',  // ← שונה מ-'server'
-  // adapter: node({ mode: 'standalone' }),  // ← הסר - Static לא צריך adapter
+  output: 'server',
+  adapter: vercel(),
   markdown: {
     remarkPlugins: [readingTime, modifiedTime],
   },
