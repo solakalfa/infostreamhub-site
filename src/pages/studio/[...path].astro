@@ -1,0 +1,4 @@
+---
+const path = Astro.params.path || '';
+return Astro.redirect(`https://primis-nexus.sanity.studio/${path}`, 302);
+---
