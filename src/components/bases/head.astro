@@ -37,6 +37,15 @@ const cookiebotId = import.meta.env.PUBLIC_COOKIEBOT_ID;
   type="text/javascript"
 ></script>
 
+<!-- Fix for Astro View Transitions -->
+<script is:inline>
+  document.addEventListener('astro:after-swap', () => {
+    if (window.Cookiebot) {
+      window.Cookiebot.renew();
+    }
+  });
+</script>
+
 <!-- Global Metadata -->
 <meta charset={SITE.charset} />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
