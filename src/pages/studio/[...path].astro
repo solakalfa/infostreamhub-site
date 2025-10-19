@@ -1,4 +1,15 @@
 ---
 const path = Astro.params.path || '';
-return Astro.redirect(`https://primis-nexus.sanity.studio/${path}`, 302);
+const targetUrl = `https://primis-nexus.sanity.studio/${path}`;
 ---
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="refresh" content="0;url={targetUrl}">
+  <script>window.location.href = "{targetUrl}";</script>
+</head>
+<body>
+  <p>Redirecting to Sanity Studio...</p>
+</body>
+</html>
