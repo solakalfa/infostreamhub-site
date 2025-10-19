@@ -13,7 +13,12 @@ const query = `{
     title,
     "slug": slug.current,
     excerpt,
-    mainImage,
+    mainImage {
+      asset-> {
+        url
+      },
+      alt
+    },
     publishedAt,
     _createdAt,
     author,
@@ -24,7 +29,6 @@ const query = `{
 
 const start = (page - 1) * perPage;
 const end = start + perPage;
-
 const result = await sanity.fetch(query, { siteId, start, end });
 const articles = result.articles || [];
 const total = result.total || 0;
@@ -64,11 +68,11 @@ const totalPages = Math.ceil(total / perPage);
                 ← Previous
               </a>
             )}
-
+            
             <span class="px-4 py-2 text-gray-600">
               Page {page} of {totalPages}
             </span>
-
+            
             {page < totalPages && (
               <a 
                 href={`/articles?page=${page + 1}`}
@@ -85,6 +89,5 @@ const totalPages = Math.ceil(total / perPage);
         <p class="text-xl text-gray-600">No articles found.</p>
       </div>
     )}
-
   </div>
 </Layout>
