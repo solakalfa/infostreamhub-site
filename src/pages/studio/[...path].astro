@@ -1,0 +1,8 @@
+---
+export const prerender = false;
+
+const path = Astro.params.path || 'index.html';
+const baseUrl = 'https://primis-nexus.sanity.studio';
+
+return Astro.redirect(`${baseUrl}/${path}`, 302);
+---
