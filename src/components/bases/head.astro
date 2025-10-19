@@ -16,7 +16,6 @@ const isArticleMeta = (props: Props["meta"]): props is ArticleMeta =>
   props.type === "article";
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 const OGImage = new URL(meta.ogImage, Astro.url).href;
-
 // Debug - get Cookiebot ID
 const cookiebotId = import.meta.env.PUBLIC_COOKIEBOT_ID;
 ---
@@ -34,6 +33,7 @@ const cookiebotId = import.meta.env.PUBLIC_COOKIEBOT_ID;
   src="https://consent.cookiebot.com/uc.js" 
   data-cbid={cookiebotId}
   data-blockingmode="auto"
+  data-culture="EN"
   type="text/javascript"
 ></script>
 
