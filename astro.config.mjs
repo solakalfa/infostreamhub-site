@@ -24,7 +24,7 @@ if (RUN_KEYSTATIC === "true") {
 export default defineConfig({
   site: SITE.url,
   base: SITE.basePath,
-  output: 'server',
+  output: 'hybrid',
   adapter: vercel(),
   markdown: {
     remarkPlugins: [readingTime, modifiedTime],
