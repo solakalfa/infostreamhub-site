@@ -41,7 +41,12 @@ const cookiebotId = import.meta.env.PUBLIC_COOKIEBOT_ID;
 <script is:inline>
   document.addEventListener('astro:after-swap', () => {
     if (window.Cookiebot) {
-      window.Cookiebot.renew();
+      // אם המשתמש כבר הסכים - אל תציג שוב
+      if (window.Cookiebot.consented) {
+        window.Cookiebot.hide();
+      } else {
+        window.Cookiebot.renew();
+      }
     }
   });
 </script>
