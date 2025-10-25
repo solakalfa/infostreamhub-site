@@ -1,0 +1,53 @@
+---
+import Head from "@/components/bases/head.astro";
+import Header from "@/components/shared/header.astro";
+import Footer from "@/components/shared/footer.astro";
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description = "" } = Astro.props;
+const meta = {
+  title,
+  description,
+  canonical: Astro.url.pathname,
+  ogType: "article"
+};
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <Head meta={meta} />
+    <slot name="head" />
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <Header />
+    <main class="flex-1">
+      <div class="container mx-auto py-8">
+        <slot />
+      </div>
+    </main>
+    <Footer />
+    
+    <!-- Page View Tracking for Facebook CAPI -->
+    <script>
+      if (window.location.pathname.startsWith('/articles/')) {
+        const params = new URLSearchParams(window.location.search);
+        const clickId = params.get('click_id') || params.get('fbclid');
+        const apiUrl = import.meta.env.PUBLIC_API_BASE || 'http://localhost:8081';
+        
+        // Send page view event
+        fetch(`${apiUrl}/api/v1/events/pageview`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            click_id: clickId,
+            url: window.location.href,
+            referrer: document.referrer,
+            user_agent: navigator.userAgent
+          })
+        }).catch(err => console.error('PageView tracking failed:', err));
+      }
+    </script>
+  </body>
+</html>
