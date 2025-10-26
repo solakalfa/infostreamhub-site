@@ -1,26 +1,39 @@
 ---
 import { sanity } from '../../lib/sanity';
 import Layout from '../../layouts/Layout.astro';
+import { buildCampaignUrl } from '../../lib/campaign-utils';
 
 const siteId = import.meta.env.PUBLIC_SITE_ID || 'infostreamhub';
+
 const query = `*[_type == "article" && defined(slug.current) && siteId == $siteId] | order(_createdAt desc) {
   _id,
   title,
   "slug": slug.current,
-  _createdAt
+  _createdAt,
+  metadata
 }`;
+
 const articles = await sanity.fetch(query, { siteId });
 ---
+
 <Layout title="Admin - Articles">
-  <div class="max-w-6xl mx-auto px-4 py-8">
+  <div class="max-w-7xl mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-8">
       <h1 class="text-3xl font-bold">Articles Management</h1>
-      <a 
-        href="/admin/tarzo-orders" 
-        class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 font-semibold"
-      >
-        📊 Tarzo Orders Dashboard
-      </a>
+      <div class="flex gap-4">
+        <a 
+          href="/admin/request" 
+          class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 font-semibold"
+        >
+          ➕ New Article
+        </a>
+        <a 
+          href="/admin/tarzo-orders" 
+          class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 font-semibold"
+        >
+          📊 Tarzo Orders
+        </a>
+      </div>
     </div>
     
     <div class="bg-white shadow rounded-lg">
@@ -32,16 +45,115 @@ const articles = await sanity.fetch(query, { siteId });
         {articles.length === 0 ? (
           <p class="text-gray-600">No articles found.</p>
         ) : (
-          <ul class="divide-y divide-gray-200">
-            {articles.map((a) => (
-              <li class="py-2">
-                <strong>{a.title || "Untitled"}</strong> – {a.slug || ""}
-                <a href={`/articles/${a.slug}`} class="ml-4 text-blue-600 hover:underline">View</a>
-              </li>
-            ))}
-          </ul>
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Title
+                  </th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Campaign Info
+                  </th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                {articles.map((a) => {
+                  const canonicalUrl = `/articles/${a.slug}`;
+                  const campaignUrl = buildCampaignUrl(a.slug, a.metadata || {});
+                  const hasCampaign = a.metadata?.campaign_id || a.metadata?.external_ref;
+                  
+                  return (
+                    <tr>
+                      <td class="px-6 py-4">
+                        <div class="text-sm font-medium text-gray-900">{a.title || "Untitled"}</div>
+                        <div class="text-sm text-gray-500">{a.slug}</div>
+                      </td>
+                      <td class="px-6 py-4">
+                        {hasCampaign ? (
+                          <div class="text-sm space-y-1">
+                            <div>
+                              <span class="font-medium text-blue-600">Campaign ID:</span>
+                              <span class="ml-2">{a.metadata.campaign_id || 'N/A'}</span>
+                            </div>
+                            <div>
+                              <span class="font-medium text-gray-600">External Ref:</span>
+                              <span class="ml-2">{a.metadata.external_ref || 'N/A'}</span>
+                            </div>
+                          </div>
+                        ) : (
+                          <span class="text-sm text-gray-400">No campaign data</span>
+                        )}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm space-y-2">
+                        <div class="flex gap-2">
+                          <a 
+                            href={canonicalUrl} 
+                            target="_blank"
+                            class="text-blue-600 hover:text-blue-800"
+                          >
+                            📄 View
+                          </a>
+                          {hasCampaign && (
+                            <>
+                              <button 
+                                class="copy-campaign-url text-green-600 hover:text-green-800"
+                                data-url={campaignUrl}
+                              >
+                                📋 Copy Campaign URL
+                              </button>
+                              <a 
+                                href={`${campaignUrl}&preview=1`}
+                                target="_blank"
+                                class="text-purple-600 hover:text-purple-800"
+                              >
+                                👁️ Preview
+                              </a>
+                            </>
+                          )}
+                        </div>
+                        <div class="text-xs text-gray-500">
+                          {hasCampaign ? (
+                            <>
+                              <div>🔵 Campaign: {campaignUrl}</div>
+                              <div>⚪ Canonical: {canonicalUrl}</div>
+                            </>
+                          ) : (
+                            <div>⚪ {canonicalUrl}</div>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>
   </div>
+
+  <script>
+    document.querySelectorAll('.copy-campaign-url').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const url = e.target.dataset.url;
+        try {
+          await navigator.clipboard.writeText(url);
+          const originalText = e.target.textContent;
+          e.target.textContent = '✓ Copied!';
+          e.target.classList.add('text-green-800');
+          setTimeout(() => {
+            e.target.textContent = originalText;
+            e.target.classList.remove('text-green-800');
+          }, 2000);
+        } catch (err) {
+          alert('Failed to copy: ' + err.message);
+        }
+      });
+    });
+  </script>
 </Layout>

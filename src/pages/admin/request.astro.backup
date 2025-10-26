@@ -194,18 +194,6 @@ import Layout from '../../layouts/Layout.astro';
         .map(k => k.trim())
         .filter(k => k.length > 0);
 
-      // Build options - only include if value exists
-      const options = {};
-      if (formData.get('headline')) options.headline = formData.get('headline');
-      if (formData.get('seed_content')) options.seed_content = formData.get('seed_content');
-      if (formData.get('tone')) options.tone = formData.get('tone');
-      if (formData.get('word_count')) options.word_count = parseInt(formData.get('word_count'));
-
-      // Build metadata - only include if value exists
-      const metadata = {};
-      if (formData.get('external_ref')) metadata.external_ref = formData.get('external_ref');
-      if (formData.get('campaign_id')) metadata.campaign_id = formData.get('campaign_id');
-
       return {
         vertical: formData.get('vertical'),
         topic: formData.get('topic'),
@@ -213,8 +201,16 @@ import Layout from '../../layouts/Layout.astro';
         target_languages: formData.getAll('languages'),
         provider: formData.get('provider') || 'openai',
         siteId: import.meta.env.PUBLIC_SITE_ID || 'infostreamhub',
-        options: Object.keys(options).length > 0 ? options : {},
-        metadata: Object.keys(metadata).length > 0 ? metadata : {}
+        options: {
+          headline: formData.get('headline') || undefined,
+          seed_content: formData.get('seed_content') || undefined,
+          tone: formData.get('tone') || undefined,
+          word_count: formData.get('word_count') ? parseInt(formData.get('word_count')) : undefined
+        },
+        metadata: {
+          external_ref: formData.get('external_ref') || undefined,
+          campaign_id: formData.get('campaign_id') || undefined
+        }
       };
     }
 
@@ -230,8 +226,6 @@ import Layout from '../../layouts/Layout.astro';
 
       try {
         const payload = buildPayload(formData);
-        console.log('Payload:', payload); // Debug
-        
         const response = await fetch(`${import.meta.env.PUBLIC_API_BASE}/api/v1/content/articles/auto`, {
           method: 'POST',
           headers: {
