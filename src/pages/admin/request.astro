@@ -393,7 +393,7 @@ Year: 2025
         const payload = buildPayload(formData);
         console.log('Payload:', payload);
         
-        const response = await fetch(`${import.meta.env.PUBLIC_API_BASE}/api/v1/content/articles/auto`) {
+        const response = await fetch(`http://localhost:8081/api/v1/content/articles/auto`) {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
