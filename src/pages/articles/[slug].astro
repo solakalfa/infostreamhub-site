@@ -43,6 +43,16 @@ if (!article) {
   return Astro.redirect('/404');
 }
 
+// Debug logging
+console.log('🔍 Article data:', {
+  title: article.title,
+  vertical: article.vertical,
+  keywords: article.keywords,
+  keywordsType: typeof article.keywords,
+  keywordsLength: article.keywords?.length,
+  showRsocFeed: article.showRsocFeed
+});
+
 const htmlContent = marked(article.body || '');
 const paragraphs = htmlContent.split('</p>');
 const beforeRSOC = paragraphs.slice(0, 2).join('</p>') + '</p>';
