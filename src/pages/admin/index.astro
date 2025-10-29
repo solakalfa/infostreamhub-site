@@ -5,6 +5,12 @@ import { buildCampaignUrl } from '../../lib/campaign-utils';
 
 const siteId = import.meta.env.PUBLIC_SITE_ID || 'infostreamhub';
 
+// Helper: Convert title object to string
+const getTitle = (titleObj) => {
+  if (typeof titleObj === 'string') return titleObj;
+  return titleObj?.en || titleObj?.he || Object.values(titleObj)[0] || 'Untitled';
+};
+
 const query = `*[_type == "article" && defined(slug.current) && siteId == $siteId] | order(_createdAt desc) {
   _id,
   title,
@@ -69,7 +75,7 @@ const articles = await sanity.fetch(query, { siteId });
                   return (
                     <tr>
                       <td class="px-6 py-4">
-                        <div class="text-sm font-medium text-gray-900">{a.title || "Untitled"}</div>
+                        <div class="text-sm font-medium text-gray-900">{getTitle(a.title)}</div>
                         <div class="text-sm text-gray-500">{a.slug}</div>
                       </td>
                       <td class="px-6 py-4">
