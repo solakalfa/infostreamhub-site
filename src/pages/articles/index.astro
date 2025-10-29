@@ -7,6 +7,12 @@ const siteId = import.meta.env.PUBLIC_SITE_ID || 'infostreamhub';
 const page = Number(Astro.url.searchParams.get('page') || '1');
 const perPage = 12;
 
+// Helper: Convert title object to string
+const getTitle = (titleObj) => {
+  if (typeof titleObj === 'string') return titleObj;
+  return titleObj?.en || titleObj?.he || Object.values(titleObj)[0] || 'Untitled';
+};
+
 const query = `{
   "articles": *[_type == "article" && siteId == $siteId && defined(slug.current)] | order(publishedAt desc, _createdAt desc) [$start...$end] {
     _id,
@@ -54,7 +60,7 @@ const totalPages = Math.ceil(total / perPage);
       <>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {articles.map((article: any) => (
-            <Card article={article} />
+            <Card article={{...article, title: getTitle(article.title)}} />
           ))}
         </div>
 
