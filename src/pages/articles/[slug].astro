@@ -188,7 +188,7 @@ const shareTitle = encodeURIComponent(article.title);
       <div class="prose prose-lg max-w-none">
         <Fragment set:html={beforeRSOC} />
 
-        {article.showRsocFeed !== false && article.keywords && article.keywords.length > 0 && (
+        {article.keywords && Array.isArray(article.keywords) && article.keywords.length > 0 && (
           <div id="rsoc-keywords" class="my-12 p-8 bg-gradient-to-br from-blue-50 to-slate-50 rounded-xl border-2 border-blue-100 shadow-sm">
             <h3 class="text-lg font-semibold text-gray-800 mb-4">Related Topics</h3>
             <div class="flex flex-wrap gap-3">
