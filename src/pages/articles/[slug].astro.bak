@@ -40,10 +40,7 @@ const query = `*[_type == "article" && slug.current == $slug && siteId == $siteI
 const article = await sanity.fetch(query, { slug, siteId });
 
 if (!article) {
-  return new Response(null, {
-    status: 404,
-    statusText: 'Not found'
-  });
+  return Astro.redirect('/404');
 }
 
 const htmlContent = marked(article.body || '');
@@ -124,6 +121,11 @@ const shareTitle = encodeURIComponent(article.title);
     </nav>
 
     <header class="max-w-4xl mx-auto px-4 pt-2 pb-8">
+      {article.vertical && (
+        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full mb-4">
+          {article.vertical}
+        </span>
+      )}
 
       <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
         {article.title}
@@ -176,9 +178,16 @@ const shareTitle = encodeURIComponent(article.title);
       <div class="prose prose-lg max-w-none">
         <Fragment set:html={beforeRSOC} />
 
-        {article.showRsocFeed !== false && (
-          <div class="my-12">
-            <!-- RSOC Feed placeholder -->
+        {article.showRsocFeed !== false && article.keywords && article.keywords.length > 0 && (
+          <div id="rsoc-keywords" class="my-12 p-8 bg-gradient-to-br from-blue-50 to-slate-50 rounded-xl border-2 border-blue-100 shadow-sm">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Related Topics</h3>
+            <div class="flex flex-wrap gap-3">
+              {article.keywords.map((keyword: string) => (
+                <span class="inline-block px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-full hover:bg-blue-700 transition-colors">
+                  {keyword}
+                </span>
+              ))}
+            </div>
           </div>
         )}
 
@@ -235,35 +244,6 @@ const shareTitle = encodeURIComponent(article.title);
             </svg>
             WhatsApp
           </a>
-        </div>
-      </div>
-
-      <!-- Article Metadata: Vertical + Keywords -->
-      <div class="my-12 py-8 border-y border-gray-200">
-        <div class="space-y-6">
-          
-          {article.vertical && (
-            <div>
-              <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Category</h3>
-              <span class="inline-block px-4 py-2 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
-                {article.vertical}
-              </span>
-            </div>
-          )}
-
-          {article.keywords && article.keywords.length > 0 && (
-            <div>
-              <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Keywords</h3>
-              <div class="flex flex-wrap gap-2">
-                {article.keywords.map((keyword: string) => (
-                  <span class="inline-block px-3 py-1.5 bg-gray-100 text-gray-700 text-sm rounded-full hover:bg-gray-200 transition-colors">
-                    {keyword}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
         </div>
       </div>
 
