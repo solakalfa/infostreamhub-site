@@ -341,15 +341,15 @@ import Layout from "../../layouts/Layout.astro";
       metadata.showRsocFeed = formData.get("showRsocFeed") === "on";
 
       return {
-        topic: formData.get("title"), // ← שנה title → topic
-        section_titles: section_titles,
+        title: formData.get("title"), // ← היה topic
+        section_titles,
         intro: formData.get("intro") || null,
-        target_languages: [formData.get("language") || "en"],
+        language: formData.get("language") || "en",
         vertical: formData.get("vertical"),
-        keywords: keywords,
+        keywords, // כבר מערך
         siteId: import.meta.env.PUBLIC_SITE_ID || "infostreamhub",
         provider: formData.get("provider") || "openai",
-        metadata: metadata,
+        metadata,
       };
     }
 
