@@ -311,18 +311,18 @@ import Layout from "../../layouts/Layout.astro";
     }
 
     function buildPayload(formData) {
-      // Collect section titles (filter empty)
+      // ✅ Collect section titles
       const section_titles = [];
       for (let i = 1; i <= 5; i++) {
         const val = formData.get(`section_title_${i}`)?.trim();
         if (val) section_titles.push(val);
       }
 
-      // Validate minimum 3 sections
+      // ✅ Validate at least 3
       if (section_titles.length < 3) {
-        throw new Error("At least 3 section titles are required");
+        alert("אנא מלא לפחות 3 כותרות לפני יצירת מאמר.");
+        throw new Error("At least 3 section titles are required.");
       }
-
       // Build keywords array
       const keywordsRaw = formData.get("keywords");
       const keywords = keywordsRaw
@@ -341,7 +341,7 @@ import Layout from "../../layouts/Layout.astro";
       metadata.showRsocFeed = formData.get("showRsocFeed") === "on";
 
       return {
-        topic: formData.get("title"),  // ← שנה title → topic
+        topic: formData.get("title"), // ← שנה title → topic
         section_titles: section_titles,
         intro: formData.get("intro") || null,
         target_languages: [formData.get("language") || "en"],
