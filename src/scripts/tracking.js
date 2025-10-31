@@ -49,6 +49,7 @@
     
     const payload = {
       click_id: clickId,
+      event_type: 'click',  // ← חדש!
       utm_source: urlParams.get('utm_source') || 'fb',
       account_id: urlParams.get('account_id') || 'default_account',
       campaign_id: urlParams.get('campaign_id') || 'unknown',
